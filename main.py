@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-from dotenv import load_dotenv
 import time
 import pandas as pd
 from services.auth.login_wall import render_login_wall
@@ -19,8 +18,6 @@ from services.coaching.voice_pipeline import VoicePipeline, autoplay_audio
 
   
 def main():
-    load_dotenv()
-
     st.set_page_config(
         page_icon="🏋️‍♀️",
         page_title="AI Real-time GYM Coach",
@@ -40,7 +37,7 @@ def main():
 
     if "voice_pipeline" not in st.session_state:
         try:
-            api_key = os.getenv("GROQ_API_KEY")
+            api_key = os.environ.get("GROQ_API_KEY", "")
 
             if not api_key and hasattr(st, "secrets") and "GROQ_API_KEY" in st.secrets:
                 api_key = st.secrets["GROQ_API_KEY"]
@@ -51,7 +48,6 @@ def main():
             st.session_state.voice_pipeline = VoicePipeline(llm_coach, tts)
         except Exception as e:
             st.session_state.voice_pipeline = None
-            st.error(f"Voice pipeline error: {e}")
 
     workout_started = st.session_state.get("workout_started", False)
     
