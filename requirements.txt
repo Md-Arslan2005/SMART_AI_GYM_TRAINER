@@ -8,3 +8,5 @@ gtts==2.5.3
 python-dotenv==1.2.2
 
 python-dotenv
+
+python-dotenv
